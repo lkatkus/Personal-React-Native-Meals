@@ -1,15 +1,31 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { AppLoading } from 'expo';
+import * as Font from 'expo-font';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+import Navigator from './navigation/Navigator';
+
+const fetchFonts = () =>
+  Font.loadAsync({
+    'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
+    'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
+  });
+
+const App = () => {
+  const [loaded, setLoaded] = React.useState(false);
+
+  if (!loaded) {
+    return (
+      <AppLoading
+        startAsync={fetchFonts}
+        onFinish={() => setLoaded(true)}
+        onError={(err) => console.log(err)}
+      />
+    );
+  }
+
+  return <Navigator />;
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -19,3 +35,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+export default App;
