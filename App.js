@@ -1,9 +1,12 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { enableScreens } from 'react-native-screens';
 import { AppLoading } from 'expo';
+import { StatusBar } from 'expo-status-bar';
 import * as Font from 'expo-font';
 
 import Navigator from './navigation/Navigator';
+
+enableScreens();
 
 const fetchFonts = () =>
   Font.loadAsync({
@@ -24,16 +27,12 @@ const App = () => {
     );
   }
 
-  return <Navigator />;
+  return (
+    <React.Fragment>
+      <StatusBar style='auto' />
+      <Navigator />
+    </React.Fragment>
+  );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default App;

@@ -1,25 +1,48 @@
 import React from 'react';
-import { Button, StyleSheet } from 'react-native';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
-import { Screen } from '@containers';
-import { Text } from '@components';
-
+import { Screen, CategoryList } from '@containers';
 import { SCREENS } from '@navigation/Navigator.screens';
+
+import { HeaderButton, Text } from '@components';
+
+import { CATEGORIES } from './../data/mock';
 
 const CategoriesScreen = ({ navigation }) => {
   return (
     <Screen>
-      <Text.Body>CategoriesScreen</Text.Body>
-      <Button
-        title='Category'
-        onPress={() => {
-          navigation.navigate({ routeName: SCREENS.CATEGORY });
+      <CategoryList
+        categories={CATEGORIES}
+        clickCategoryHandler={(newCategory) => {
+          const selectedCategory = CATEGORIES.find(
+            ({ id }) => newCategory === id
+          );
+
+          return navigation.navigate({
+            routeName: SCREENS.CATEGORY,
+            params: {
+              category: selectedCategory,
+            },
+          });
         }}
       />
     </Screen>
   );
 };
 
-const styles = StyleSheet.create({});
+CategoriesScreen.navigationOptions = ({ navigation }) => {
+  return {
+    headerTitle: 'Meal categories',
+    headerLeft: () => (
+      <HeaderButtons HeaderButtonComponent={HeaderButton}>
+        <Item
+          title='Menu'
+          iconName='ios-menu'
+          onPress={navigation.toggleDrawer}
+        />
+      </HeaderButtons>
+    ),
+  };
+};
 
 export default CategoriesScreen;

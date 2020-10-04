@@ -1,24 +1,42 @@
 import React from 'react';
-import { Button, Text, StyleSheet } from 'react-native';
 
-import { Screen } from '@containers';
-
+import { Screen, MealsList } from '@containers';
 import { SCREENS } from '@navigation/Navigator.screens';
 
+import { MEALS } from './../data/mock';
+
 const CategoryScreen = ({ navigation }) => {
+  const selectedCategory = navigation.getParam('category');
+  const categoryMeals = MEALS.filter((meal) =>
+    meal.categoryId.includes(selectedCategory.id)
+  );
+
   return (
     <Screen>
-      <Text>CategoryScreen</Text>
-      <Button
-        title='MealDetailsScreen'
-        onPress={() => {
-          navigation.navigate({ routeName: SCREENS.MEAL_DETAILS });
-        }}
+      <MealsList
+        items={categoryMeals}
+        clickMealHandler={(meal) =>
+          navigation.navigate({
+            routeName: SCREENS.MEAL_DETAILS,
+            params: {
+              meal: meal,
+            },
+          })
+        }
       />
     </Screen>
   );
 };
 
-const styles = StyleSheet.create({});
+CategoryScreen.navigationOptions = ({ navigation }) => {
+  const selectedCategory = navigation.getParam('category');
+
+  return {
+    headerTitle: selectedCategory.title,
+    headerStyle: {
+      backgroundColor: selectedCategory.color,
+    },
+  };
+};
 
 export default CategoryScreen;
