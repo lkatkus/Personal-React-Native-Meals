@@ -4,7 +4,7 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { Screen, CategoryList } from '@containers';
 import { SCREENS } from '@navigation/Navigator.screens';
 
-import { HeaderButton, Text } from '@components';
+import { HeaderButton } from '@components';
 
 import { CATEGORIES } from './../data/mock';
 

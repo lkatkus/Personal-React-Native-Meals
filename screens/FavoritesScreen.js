@@ -1,26 +1,34 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 import { Screen, MealsList } from '@containers';
-import { HeaderButton } from '@components';
+import { HeaderButton, Text } from '@components';
 import { SCREENS } from '@navigation/Navigator.screens';
 
-import { MEALS } from './../data/mock';
-
 const FavoritesScreen = ({ navigation }) => {
+  const availableMeals = useSelector((state) => state.meals.favoriteMeals);
+  const hasFavorites = availableMeals.length > 0;
+
   return (
-    <Screen>
-      <MealsList
-        items={MEALS}
-        clickMealHandler={(meal) =>
-          navigation.navigate({
-            routeName: SCREENS.MEAL_DETAILS,
-            params: {
-              meal: meal,
-            },
-          })
-        }
-      />
+    <Screen
+      style={!hasFavorites && { alignItems: 'center', justifyContent: 'center' }}
+    >
+      {hasFavorites ? (
+        <MealsList
+          items={availableMeals}
+          clickMealHandler={(meal) =>
+            navigation.navigate({
+              routeName: SCREENS.MEAL_DETAILS,
+              params: {
+                meal: meal,
+              },
+            })
+          }
+        />
+      ) : (
+        <Text.Body>You have no favorite meals yet.</Text.Body>
+      )}
     </Screen>
   );
 };

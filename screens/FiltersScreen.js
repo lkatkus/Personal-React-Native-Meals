@@ -1,10 +1,14 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 import { Screen } from '@containers';
 import { HeaderButton, Text, FilterSwitch } from '@components';
 
+import { setFilters } from './../store/actions';
+
 const FiltersScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
   const [filterState, setFilterState] = React.useState({
     isGlutenFree: false,
     isLactoseFree: false,
@@ -24,7 +28,7 @@ const FiltersScreen = ({ navigation }) => {
       ...filterState,
     };
 
-    console.log(appliedFilters);
+    dispatch(setFilters(appliedFilters));
   }, [filterState]);
 
   React.useEffect(() => {
@@ -66,15 +70,15 @@ FiltersScreen.navigationOptions = ({ navigation }) => ({
     </HeaderButtons>
   ),
   headerTitle: 'Filter Meals',
-  // headerRight: () => (
-  //   <HeaderButtons HeaderButtonComponent={HeaderButton}>
-  //     <Item
-  //       title='Menu'
-  //       iconName='ios-save'
-  //       onPress={navigation.getParam('saveFilters')}
-  //     />
-  //   </HeaderButtons>
-  // ),
+  headerRight: () => (
+    <HeaderButtons HeaderButtonComponent={HeaderButton}>
+      <Item
+        title='Menu'
+        iconName='ios-save'
+        onPress={navigation.getParam('saveFilters')}
+      />
+    </HeaderButtons>
+  ),
 });
 
 export default FiltersScreen;

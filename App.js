@@ -1,12 +1,19 @@
 import React from 'react';
+import { createStore, combineReducers } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import { Provider } from 'react-redux';
 import { enableScreens } from 'react-native-screens';
 import { AppLoading } from 'expo';
 import { StatusBar } from 'expo-status-bar';
 import * as Font from 'expo-font';
 
 import Navigator from './navigation/Navigator';
+import mealsReducer from './store/reducers';
 
 enableScreens();
+
+const rootReducer = combineReducers({ meals: mealsReducer });
+const store = createStore(rootReducer, composeWithDevTools());
 
 const fetchFonts = () =>
   Font.loadAsync({
@@ -28,10 +35,12 @@ const App = () => {
   }
 
   return (
-    <React.Fragment>
-      <StatusBar style='auto' />
-      <Navigator />
-    </React.Fragment>
+    <Provider store={store}>
+      <React.Fragment>
+        <StatusBar style='auto' />
+        <Navigator />
+      </React.Fragment>
+    </Provider>
   );
 };
 
